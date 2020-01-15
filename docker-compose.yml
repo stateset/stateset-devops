@@ -1,6 +1,47 @@
 version: "3"
 services:
+    postgres:
+        image: postgres
+        restart: always
+        volumes:
+        - db_data:/var/lib/postgresql/data
+      graphql-engine:
+        image: hasura/graphql-engine:v1.0.1
+        ports:
+        - "8080:8080"
+        depends_on:
+        - "postgres"
+        restart: always
+        environment:
+          HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+          HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+          HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+          ## uncomment next line to set an admin secret
+          # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+    volumes:
+      db_data:
+    
+      hasura-backend-plus:
+      image: elitan/hasura-backend-plus:latest
+      environment:
+        PORT: 3000
+        USER_FIELDS: ''
+        USER_REGISTRATION_AUTO_ACTIVE: 'true'
+        HASURA_GRAPHQL_ENDPOINT: http://graphql-engine:8080/v1/graphql
+        HASURA_GRAPHQL_ADMIN_SECRET: <hasura-admin-secret>
+        HASURA_GRAPHQL_JWT_SECRET: '{"type": "HS256", "key": "secret_key"}'
+        S3_ACCESS_KEY_ID: <access>
+        S3_SECRET_ACCESS_KEY: <secret>
+        S3_ENDPOINT: <endpoint>
+        S3_BUCKET: <bucket>
+        REFETCH_TOKEN_EXPIRES: 43200
+        JWT_TOKEN_EXPIRES: 15
+      volumes:
+      - ./storage-rules:/app/src/storage/rules
+
   partya:
+    networks:
+        - stateset
     build: .
     volumes:
       # The node configuration
@@ -27,6 +68,8 @@ services:
       - "10003:10003"
       - "10004:10004"
   partyb:
+    networks:
+        - stateset
     build: .
     volumes:
       # The node configuration
@@ -53,6 +96,8 @@ services:
       - "20003:20003"
       - "20004:20004"
   partyc:
+    networks:
+        - stateset
     build: .
     volumes:
       # The node configuration
@@ -79,6 +124,8 @@ services:
       - "30003:30003"
       - "30004:30004"
   partyd:
+    networks:
+        - stateset
     build: .
     volumes:
       # The node configuration
@@ -105,6 +152,8 @@ services:
       - "40003:40003"
       - "40004:40004"
   partye:
+    networks:
+        - stateset
     build: .
     volumes:
       # The node configuration
@@ -131,6 +180,8 @@ services:
       - "50003:50003"
       - "50004:50004"
   partyf:
+    networks:
+        - stateset
     build: .
     volumes:
       # The node configuration
@@ -157,6 +208,8 @@ services:
       - "60003:60003"
       - "60004:60004"
   partyg:
+    networks:
+        - stateset
     build: .
     volumes:
       # The node configuration
@@ -183,6 +236,8 @@ services:
       - "70003:70003"
       - "70004:70004"
   partyh:
+    networks:
+        - stateset
     build: .
     volumes:
       # The node configuration
@@ -209,6 +264,8 @@ services:
       - "80003:80003"
       - "80004:80004"
   notary:
+    networks:
+        - stateset
     build: .
     volumes:
       # The node configuration
