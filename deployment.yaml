@@ -69,7 +69,7 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            # [START Stateset CLM config variables]
+            # [START Stateset config variables]
             - name: STATESET_LEGAL_NAME
               value: organizationName
             - name: STATESET_P2P_ADDRESS
