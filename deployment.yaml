@@ -67,13 +67,15 @@ spec:
         - name: stateset
           image: stateset/stateset:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 8443
           env:
             # [START Stateset config variables]
             - name: STATESET_LEGAL_NAME
               value: organizationName
             - name: STATESET_P2P_ADDRESS
               value: organizationName
+            - name: _COMPATIBILITY_ZONE_URL
+              value: http://network-map:8081
             - name: STATESET_KEY_STORE_PASSWORD
               value: organizationName
             - name: STATESET_TRUST_STORE_PASSWORD
@@ -98,6 +100,7 @@ spec:
                 secretKeyRef:
                   name: cloudsql-db-credentials
                   key: password
+              
         # Change [INSTANCE_CONNECTION_NAME] here to include your GCP
         # project, the region of your Cloud SQL instance and the name
         # of your Cloud SQL instance. The format is
