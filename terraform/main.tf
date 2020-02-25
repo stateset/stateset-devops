@@ -1,11 +1,24 @@
 # Google Provider for Stateset
 
 provider "google" {
-  project = ""
+  project = "stateset"
   region  = "us-central1"
   zone    = "us-central1-c"
 }
 
+# Cloud SQL Database 
+
+resource "google_sql_database_instance" "master" {
+  name             = "master-instance"
+  database_version = "POSTGRES_11"
+  region           = "us-central1"
+
+  settings {
+    # Second-generation instance tiers are based on the machine
+    # type. See argument reference below.
+    tier = "db-f1-micro"
+  }
+}
 
 # Kubernetes Cluster
 
@@ -50,6 +63,8 @@ resource "google_compute_instance" "vm_instance" {
     }
   }
 }
+
+
 
 
 # Google Network 
