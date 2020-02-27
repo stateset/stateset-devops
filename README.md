@@ -1,4 +1,4 @@
-# Stateset Docker Compose
+# Stateset Network DevOps
 
 Stateset is a financial network for digital commerce working capital automation.
 
